@@ -11,11 +11,15 @@ class GameApp extends StatefulWidget {
 }
 
 class _GameAppState extends State<GameApp> {
+  // this is my entry point into the game
+  // since this is a MonkeyFlyGame, we can use it to access the game state and update the UI accordingly
   late final MonkeyFlyGame game;
 
   @override
+  // this just initializes the game and sets up the game widget to be displayed in the app
   void initState() {
     super.initState();
+    //this is my entry point into the game
     game = MonkeyFlyGame();
   }
 

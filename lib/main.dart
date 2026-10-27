@@ -8,5 +8,6 @@ void main() {
   Flame.device.fullScreen();
   Flame.device.setPortrait();
 
+  //this is my entry point into the game
   runApp(const GameApp());
 }

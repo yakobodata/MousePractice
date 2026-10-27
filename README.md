@@ -1,21 +1,11 @@
-<<<<<<< HEAD
-# monkey_fly
+## Monkey Fly
+This is a game that helps kids to do target practice
 
-A new Flutter project.
+# Number line Summation
+We are going to learn addition using a number line
 
-## Getting Started
+When some shoot the birds , it will ask you how many birds have you shoot down by showing you a random figure
 
-This project is a starting point for a Flutter application.
+Here we are practing counting and also interpreting the line graph
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-=======
-"# learning_flame_engine" 
->>>>>>> 38833babc94e03e27bfef95e93f25aad6bb531a4
+This helps children build number sense
