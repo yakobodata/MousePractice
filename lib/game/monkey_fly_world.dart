@@ -53,11 +53,11 @@ class MonkeyFlyWorld extends World with HasGameReference<MonkeyFlyGame>{
 
   @override
   void update(double dt) {
-    super.update(dt);
+    // super.update(dt);
 
-    children.whereType<Bird>().forEach((bird) {
-    bird.position.y -= dt * bird.speed; // ← uses the random speed of each bird
-    });
+    // children.whereType<Bird>().forEach((bird) {
+    // bird.position.y -= dt * bird.speed; // ← uses the random speed of each bird
+    // });
 
   }
   

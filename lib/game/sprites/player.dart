@@ -27,7 +27,5 @@ class Player extends SpriteComponent with HasGameReference<MonkeyFlyGame> {
     }
 
     position.y = newY;
-
-    
   }
 }

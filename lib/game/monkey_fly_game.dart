@@ -27,4 +27,10 @@ class MonkeyFlyGame extends FlameGame {
   Color backgroundColor() {
     return Colors.green;
   }
+
+  void increaseScore() {
+  tappedBirds++;
+  // If you have the number line:
+  // numberLine.updateValue(tappedBirds);
+}
 }
