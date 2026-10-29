@@ -10,14 +10,10 @@ class Bird extends SpriteComponent with HasGameReference<MonkeyFlyGame>, Collisi
   Bird({required this.spritePath,}): speed = 500 + Random().nextDouble() * 400; // random speed between 250 and 650
 
   final String spritePath;
-  final double speed; // ← each bird now has its own speed
+  final double speed;
 
-  bool isHit = false; 
-  double fallSpeed = 0; 
-  int tappedBirds = 0;
-  late TextComponent scoreText;
-  
-  late NumberLine numberLine;
+  bool isHit = false;
+  double fallSpeed = 0;
 
   @override
   Future<void> onLoad() async {
@@ -26,13 +22,14 @@ class Bird extends SpriteComponent with HasGameReference<MonkeyFlyGame>, Collisi
     anchor = Anchor.center;
     add(CircleHitbox());
   }
-  
+
   @override
   void onTapDown(TapDownEvent event) {
-    if (isHit) return;         // already shot → ignore
+    if (isHit) return; // already shot
+
     isHit = true;
-    fallSpeed = 100;           // start falling
-    game.increaseScore();      // increase the score / number line
+    fallSpeed = 150;
+    game.increaseScore();
   }
 
   @override
@@ -40,20 +37,71 @@ class Bird extends SpriteComponent with HasGameReference<MonkeyFlyGame>, Collisi
     super.update(dt);
 
     if (isHit) {
-      // Falling down with gravity
-      fallSpeed += 700 * dt;               // gravity
-      // position.y += fallSpeed * dt;
-      double newY = position.y + (dt * 400);
+      // Falling with gravity
+      fallSpeed += 800 * dt;
+      position.y += fallSpeed * dt;
 
-      if (newY > (game.size.y / 2) - (size.y / 2)) {
-      newY = (game.size.y / 2) - (size.y / 2);
-        }
-      position.y = newY;
+      // Stop at the very bottom of the screen
+      final double groundY = game.size.y - (size.y / 2);
+
+      if (position.y >= groundY) {
+        position.y = groundY;
+        fallSpeed = 0;
+      }
     } else {
-      // Still flying upward
+      // Flying upward
       position.y -= speed * dt;
+
+      // Remove if it flies off the top
+      if (position.y < -100) {
+        removeFromParent();
+      }
     }
   }
+
+  // final String spritePath;
+  // final double speed; // ← each bird now has its own speed
+  // bool isHit = false; 
+  // double fallSpeed = 0; 
+  // int tappedBirds = 0;
+  // late TextComponent scoreText;
+  // late NumberLine numberLine;
+
+  // @override
+  // Future<void> onLoad() async {
+  //   sprite = await Sprite.load(spritePath);
+  //   size = Vector2.all(200);
+  //   anchor = Anchor.center;
+  //   add(CircleHitbox());
+  // }
+  
+  // @override
+  // void onTapDown(TapDownEvent event) {
+  //   if (isHit) return;         // already shot → ignore
+  //   isHit = true;
+  //   fallSpeed = 100;           // start falling
+  //   game.increaseScore();      // increase the score / number line
+  // }
+
+  // @override
+  // void update(double dt) {
+  //   super.update(dt);
+
+  //   if (isHit) {
+  //     // Falling down with gravity
+  //     fallSpeed += 700 * dt;               // gravity
+  //     // position.y += fallSpeed * dt;
+  //     double newY = position.y + (dt * 400);
+
+  //     if (newY > (game.size.y / 2) - (size.y / 2)) {
+  //     newY = (game.size.y / 2) - (size.y / 2);
+  //       }
+  //     position.y = newY;
+  //   } else {
+  //     // Still flying upward
+  //     position.y -= speed * dt;
+  //   }
+  // }
   
   
   // // ——— This makes the bird disappear when tapped ———

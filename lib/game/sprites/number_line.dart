@@ -2,14 +2,14 @@ import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
 class NumberLine extends PositionComponent {
-  int currentValue = 0;
+  List<int> roundScores = [];
 
-  NumberLine() : super(size: Vector2(5000, 1000)) {
+  NumberLine() : super(size: Vector2(5000, 2000)) {
     anchor = Anchor.topCenter;
   }
 
-  void updateValue(int value) {
-    currentValue = value.clamp(0, 20);
+  void updateRounds(List<int> scores) {
+    roundScores = List.from(scores);
   }
 
   @override
@@ -17,11 +17,6 @@ class NumberLine extends PositionComponent {
     final whitePaint = Paint()
       ..color = Colors.white
       ..strokeWidth = 10;
-
-    final yellowPaint = Paint()
-      ..color = Colors.yellow
-      ..strokeWidth = 10
-      ..strokeCap = StrokeCap.round;
 
     final textPaint = TextPaint(
       style: const TextStyle(
@@ -33,39 +28,61 @@ class NumberLine extends PositionComponent {
 
     const double startX = 30;
     final double endX = size.x - 30;
-    const double mainLineY = 55;
-    const double yellowLineY = 5; // just above the number line
+    const double mainLineY = 160;
+    final double totalWidth = endX - startX;
 
-    // ===== YELLOW LINE (from 0 to currentValue) =====
-    if (currentValue > 0) {
-      final double progressX = startX + (currentValue / 20) * (endX - startX);
+    final colors = [
+      Colors.yellow,
+      Colors.orange,
+      Colors.lightGreenAccent,
+      Colors.cyan,
+      Colors.pinkAccent,
+    ];
+
+    double currentStartX = startX;
+
+    for (int r = 0; r < roundScores.length; r++) {
+      final score = roundScores[r].clamp(0, 50);
+      if (score <= 0) continue;
+
+      final double segmentWidth = (score / 50) * totalWidth;
+      final double currentEndX = (currentStartX + segmentWidth).clamp(startX, endX);
+
+      // Different Y for each round
+      final double y = 30.0 + (r * 28);
+
+      final paint = Paint()
+        ..color = colors[r % colors.length]
+        ..strokeWidth = 12
+        ..strokeCap = StrokeCap.round;
 
       canvas.drawLine(
-        const Offset(startX, yellowLineY),
-        Offset(progressX, yellowLineY),
-        yellowPaint,
+        Offset(currentStartX, y),
+        Offset(currentEndX, y),
+        paint,
       );
+
+      // Next line starts where this one ended (in X)
+      currentStartX = currentEndX;
     }
 
-    // White main number line
+    // Main white number line
     canvas.drawLine(
-      const Offset(startX, mainLineY),
+      Offset(startX, mainLineY),
       Offset(endX, mainLineY),
       whitePaint,
     );
 
-    // Ticks and numbers 0 → 10
-    for (int i = 0; i <= 20; i++) {
-      final x = startX + (i / 20) * (endX - startX);
+    // Numbers 0 → 20
+    for (int i = 0; i <= 50; i++) {
+      final x = startX + (i / 50) * totalWidth;
 
-      // Tick
       canvas.drawLine(
         Offset(x, mainLineY - 12),
         Offset(x, mainLineY + 12),
         whitePaint,
       );
 
-      // Number
       textPaint.render(canvas, '$i', Vector2(x - 7, mainLineY + 18));
     }
   }

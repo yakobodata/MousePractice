@@ -1,60 +1,105 @@
+import 'dart:math';
+import 'dart:ui';
 import 'package:flame/components.dart';
+import 'package:flame/events.dart';
 import 'package:flame/game.dart';
+import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
-import 'package:monkey_fly/constants.dart';
-import 'package:monkey_fly/game/monkey_fly_world.dart';
+import 'package:monkey_fly/game/sprites/bird.dart';
 import 'package:monkey_fly/game/sprites/number_line.dart';
 
-//this is my entry point into the game
-class MonkeyFlyGame extends FlameGame {
-  //this is my entry point into the game
-  MonkeyFlyGame()
-      : super(
-        //so that the game world is rendered in the correct size and aspect ratio
-        //this is the starting point of the game world
-          world: MonkeyFlyWorld(),
-          camera: CameraComponent.withFixedResolution(
-            width: gameWidth,
-            height: gameHeight,
-          ),
-        );
-
-  //this is my entry point into the game       
-  int tappedBirds = 0;
-
-  late TextComponent scoreText;  
-
+class MonkeyFlyGame extends FlameGame with HasCollisionDetection, TapCallbacks {
+  int currentRoundShots = 0;          // birds shot in the current round
+  List<int> allRoundScores = [0];     // score of every round
   late NumberLine numberLine;
+  final Random _random = Random();
+
+  @override
+  Future<void> onLoad() async {
+    overlays.add('ScoreOverlay');
+
+    numberLine = NumberLine()
+      ..position = Vector2(size.x / 2, 2000)
+      ..anchor = Anchor.topCenter;
+    add(numberLine);
+
+    _spawnBirds();
+
+    final nextRoundButton = ButtonComponent(
+    button: RectangleComponent(
+      size: Vector2(180, 55),
+      paint: Paint()..color = const Color(0xFF2E7D32),
+    ),
+    position: Vector2(size.x / 2, size.y - 30),
+    anchor: Anchor.bottomCenter,
+    onPressed: startNewRound,
+  );
+
+  // Add the text AFTER creating the button
+  nextRoundButton.add(
+    TextComponent(
+      text: 'Next Round',
+      position: Vector2(90, 27.5), // center of the 180x55 button
+      anchor: Anchor.center,
+      textRenderer: TextPaint(
+        style: const TextStyle(
+          fontSize: 20,
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    ),
+  );
+
+  add(nextRoundButton);
+  }
+
   
+  // void increaseScore() {
+  //   currentRoundShots++;
+  //   allRoundScores[allRoundScores.length - 1] = currentRoundShots;
+  //   numberLine.updateRounds(allRoundScores);
+  // }
+  void increaseScore() {
+    currentRoundShots++;
+    allRoundScores[allRoundScores.length - 1] = currentRoundShots;
+    numberLine.updateRounds(allRoundScores);
+
+    overlays.remove('ScoreOverlay');
+    overlays.add('ScoreOverlay');
+  }
+
+  void startNewRound() {
+    // Save current round and start a new one
+    allRoundScores.add(0);
+    currentRoundShots = 0;
+
+    // Remove old birds
+    children.whereType<Bird>().toList().forEach((b) => b.removeFromParent());
+
+    // Spawn new birds
+    _spawnBirds();
+
+    numberLine.updateRounds(allRoundScores);
+  }
+
+  void _spawnBirds() {
+    final sprites = ['bird_1.png', 'bird_2.png', 'bird_3.png'];
+
+    for (int i = 0; i < 8; i++) {
+      final bird = Bird(spritePath: sprites[_random.nextInt(sprites.length)])
+        ..position = Vector2(
+          60 + _random.nextDouble() * (size.x - 120),
+          size.y + 80 + _random.nextDouble() * 500,
+        );
+      add(bird);
+    }
+  }
+
   @override
   Color backgroundColor() {
     return Colors.green;
   }
 
-  @override
-  Future<void> onLoad() async {
-
-    numberLine = NumberLine()
-    ..position = Vector2(size.x / 2, 2000);
-
-    add(numberLine);
-    // Show the score overlay when the game starts
-    overlays.add('ScoreOverlay');
-
-    // ... your other code (birds, number line, etc.)
-  }
-
-  void increaseScore() {
-    tappedBirds++;
-    // Force the overlay to refresh
-    overlays.remove('ScoreOverlay');
-    overlays.add('ScoreOverlay');
-    numberLine.updateValue(tappedBirds); // ← this moves the line
-  }
-    //   void increaseScore() {
-    //   tappedBirds++;
-    //   // If you have the number line:
-    //   // numberLine.updateValue(tappedBirds);
-    // }
-
+  
 }
