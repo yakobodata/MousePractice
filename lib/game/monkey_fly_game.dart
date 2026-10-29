@@ -17,6 +17,8 @@ class MonkeyFlyGame extends FlameGame with HasCollisionDetection, TapCallbacks {
   @override
   Future<void> onLoad() async {
     overlays.add('ScoreOverlay');
+    overlays.add('TopLeftLogo');
+    overlays.add('TopRightLogo');
 
     numberLine = NumberLine()
       ..position = Vector2(size.x / 2, 2000)

@@ -42,10 +42,10 @@ class NumberLine extends PositionComponent {
     double currentStartX = startX;
 
     for (int r = 0; r < roundScores.length; r++) {
-      final score = roundScores[r].clamp(0, 50);
+      final score = roundScores[r].clamp(0, 40);
       if (score <= 0) continue;
 
-      final double segmentWidth = (score / 50) * totalWidth;
+      final double segmentWidth = (score / 40) * totalWidth;
       final double currentEndX = (currentStartX + segmentWidth).clamp(startX, endX);
 
       // Different Y for each round
@@ -74,8 +74,8 @@ class NumberLine extends PositionComponent {
     );
 
     // Numbers 0 → 20
-    for (int i = 0; i <= 50; i++) {
-      final x = startX + (i / 50) * totalWidth;
+    for (int i = 0; i <= 40; i++) {
+      final x = startX + (i / 40) * totalWidth;
 
       canvas.drawLine(
         Offset(x, mainLineY - 12),
