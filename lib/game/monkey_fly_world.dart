@@ -35,9 +35,9 @@ class MonkeyFlyWorld extends World with HasGameReference<MonkeyFlyGame>{
     add(BirdOne()..position = Vector2(-320, 1400));
 
     // Just make the number line appear
-    final numberLine = NumberLine(position: Vector2(2, 100) );
-    numberLine.anchor = Anchor.topCenter; // important for proper centering
-    add(numberLine);
+    // final numberLine = NumberLine();
+    // numberLine.anchor = Anchor.topCenter; // important for proper centering
+    // add(numberLine);
 
   
   }

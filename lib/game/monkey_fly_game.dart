@@ -33,6 +33,11 @@ class MonkeyFlyGame extends FlameGame {
 
   @override
   Future<void> onLoad() async {
+
+    numberLine = NumberLine()
+    ..position = Vector2(size.x / 2, 2000);
+
+    add(numberLine);
     // Show the score overlay when the game starts
     overlays.add('ScoreOverlay');
 
@@ -44,6 +49,7 @@ class MonkeyFlyGame extends FlameGame {
     // Force the overlay to refresh
     overlays.remove('ScoreOverlay');
     overlays.add('ScoreOverlay');
+    numberLine.updateValue(tappedBirds); // ← this moves the line
   }
     //   void increaseScore() {
     //   tappedBirds++;
