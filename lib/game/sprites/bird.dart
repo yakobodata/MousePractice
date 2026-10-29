@@ -1,6 +1,4 @@
 import 'dart:math';
-
-
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
@@ -43,21 +41,14 @@ class Bird extends SpriteComponent with HasGameReference<MonkeyFlyGame>, Collisi
 
     if (isHit) {
       // Falling down with gravity
-      fallSpeed += 600 * dt;               // gravity
+      fallSpeed += 700 * dt;               // gravity
       // position.y += fallSpeed * dt;
       double newY = position.y + (dt * 400);
 
-      // // Stop at the bottom of the screen
-      // final bottomY = game.size.y - size.y / 2 - 20; // a bit above the very edge
-      // if (position.y >= bottomY) {
-      //   position.y = bottomY;
-      //   fallSpeed = 0;
-      // }
       if (newY > (game.size.y / 2) - (size.y / 2)) {
       newY = (game.size.y / 2) - (size.y / 2);
         }
-
-    position.y = newY;
+      position.y = newY;
     } else {
       // Still flying upward
       position.y -= speed * dt;

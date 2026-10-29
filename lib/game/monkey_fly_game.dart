@@ -3,6 +3,7 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:monkey_fly/constants.dart';
 import 'package:monkey_fly/game/monkey_fly_world.dart';
+import 'package:monkey_fly/game/sprites/number_line.dart';
 
 //this is my entry point into the game
 class MonkeyFlyGame extends FlameGame {
@@ -22,15 +23,32 @@ class MonkeyFlyGame extends FlameGame {
   int tappedBirds = 0;
 
   late TextComponent scoreText;  
+
+  late NumberLine numberLine;
   
   @override
   Color backgroundColor() {
     return Colors.green;
   }
 
+  @override
+  Future<void> onLoad() async {
+    // Show the score overlay when the game starts
+    overlays.add('ScoreOverlay');
+
+    // ... your other code (birds, number line, etc.)
+  }
+
   void increaseScore() {
-  tappedBirds++;
-  // If you have the number line:
-  // numberLine.updateValue(tappedBirds);
-}
+    tappedBirds++;
+    // Force the overlay to refresh
+    overlays.remove('ScoreOverlay');
+    overlays.add('ScoreOverlay');
+  }
+    //   void increaseScore() {
+    //   tappedBirds++;
+    //   // If you have the number line:
+    //   // numberLine.updateValue(tappedBirds);
+    // }
+
 }

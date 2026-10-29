@@ -2,6 +2,7 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:monkey_fly/constants.dart';
 import 'package:monkey_fly/game/monkey_fly_game.dart';
+import 'package:monkey_fly/overlays/game_overlays.dart';
 
 class GameApp extends StatefulWidget {
   const GameApp({super.key});
@@ -39,7 +40,7 @@ class _GameAppState extends State<GameApp> {
                 
                 width: gameWidth,
                 height: gameHeight,
-                child: GameWidget(game: game),
+                child: GameWidget(game: game,overlayBuilderMap: gameOverlays),
               ),
             ),
           ),

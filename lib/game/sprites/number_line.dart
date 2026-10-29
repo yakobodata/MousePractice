@@ -2,8 +2,15 @@ import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
 class NumberLine extends PositionComponent {
+
+  int? markedValue; // the correct number to highlight
+
   // Constructor for the NumberLine component, allowing for optional position and currentValue parameters
-  NumberLine({super.position, Null currentValue}) : super(size: Vector2(1500, 200));
+  NumberLine({super.position, Null currentValue}) : super(size: Vector2(4000, 200));
+
+  void markValue(int value) {
+    markedValue = value;
+  }
 
   @override
   // The render method is responsible for drawing the number line on the canvas
@@ -38,6 +45,25 @@ class NumberLine extends PositionComponent {
 
       // Number
       textPaint.render(canvas, '$i', Vector2(x - 6, 55));
+    }
+
+    // Draw the marker if we have a correct answer
+    if (markedValue != null && markedValue! >= 0 && markedValue! <= 10) {
+      // Calculate the x position for the marker based on the marked value
+      final x = 30 + (markedValue! / 10) * (size.x - 60);
+      // Draw a red circle as the marker for the correct answer
+      final markerPaint = Paint()..color = Colors.redAccent;
+      // Draw the marker circle at the calculated position
+      canvas.drawCircle(Offset(x, 50), 14, markerPaint);
+
+      // Vertical line
+      canvas.drawLine(
+        Offset(x, 20),
+        Offset(x, 80),
+        Paint()
+          ..color = Colors.yellow
+          ..strokeWidth = 4,
+      );
     }
   }
 }

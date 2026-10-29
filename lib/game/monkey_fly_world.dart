@@ -21,6 +21,7 @@ class MonkeyFlyWorld extends World with HasGameReference<MonkeyFlyGame>{
   FutureOr<void> onLoad() {
     super.onLoad();
 
+
     // add(Player());
     add(BirdOne()..position = Vector2(2, (gameHeight / 2) + (gameWidth / 2)));
     add(BirdTwo()..position = Vector2(-playerSize * 2, (gameHeight / 2) + (gameWidth / 2)));
@@ -33,22 +34,12 @@ class MonkeyFlyWorld extends World with HasGameReference<MonkeyFlyGame>{
     add(BirdOne()..position = Vector2(-400, 1400));
     add(BirdOne()..position = Vector2(-320, 1400));
 
-  //       scoreText = TextComponent(
-  //       text: 'Birds: 0',
-  //       position: Vector2(0, 30),
-  //       textRenderer: TextPaint(
-  //         style: const TextStyle(
-  //           fontSize: 24,
-  //           color: Colors.white,
-  //           fontWeight: FontWeight.bold,
-  //         ),
-  //       ),
-  //     );
-  //     add(scoreText);
-  // Just make the number line appear
-      final numberLine = NumberLine(position: Vector2(2, 100) );
-      numberLine.anchor = Anchor.topCenter; // important for proper centering
-      add(numberLine);
+    // Just make the number line appear
+    final numberLine = NumberLine(position: Vector2(2, 100) );
+    numberLine.anchor = Anchor.topCenter; // important for proper centering
+    add(numberLine);
+
+  
   }
 
   @override
